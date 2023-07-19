@@ -1,7 +1,8 @@
 import Navbar from '@/components/Navbar';
-import './globals.css';
+import './globals.scss';
 import type { Metadata } from 'next';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { Providers } from '@/states/provider';
 
 config.autoAddCss = false;
 
@@ -20,7 +21,7 @@ export default function RootLayout({
       <body className="w-[90%] mx-auto">
         {' '}
         <Navbar />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

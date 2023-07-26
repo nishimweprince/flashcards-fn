@@ -5,7 +5,7 @@ const TopFlashCards = () => {
   return (
     <article className='flex flex-col flex-wrap items-start gap-12 w-full'>
       <h2>Top FlashCards for Today</h2>
-      <ul className='flex flex-wrap gap-8'>
+      <ul className='flex flex-wrap gap-8 w-full'>
         {Array.from({ length: 10 }).map((element, index) => {
           return (
             <li className='flex' key={index}>

@@ -9,7 +9,7 @@ const Navbar = () => {
         Nishimwe Flashcards
       </Link>
       <article className="nav_cta">
-        <Button value='Create' />
+        <Button value='Create' route='/create' />
       </article>
     </header>
   );

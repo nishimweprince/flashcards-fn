@@ -1,13 +1,15 @@
-"use client"
+'use client';
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestion, faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faQuestion,
+  faQuoteLeft,
+  faQuoteRight,
+} from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/states/store';
-import { setBackCard, setFrontCard } from '@/states/features/flashCardSlice';
+import { useDispatch } from 'react-redux';
 
 interface FlashCardProps {
   author?: string;
@@ -27,37 +29,40 @@ const FlashCard: FC<FlashCardProps> = ({
   showBack = false,
 }) => {
 
-  const { showFront: front, showBack: back } = useSelector((state: RootState) => {
-    return state.flashCard
-  })
-
-  const dispatch = useDispatch();
+  const [front, setFront] = useState(showFront);
+  const [back, setBack] = useState(showBack);
 
   return (
     <>
       <article
-      onClick={() => {
-        dispatch(setBackCard(!back))
-        dispatch(setFrontCard(!front))
-        console.log(front)
-      }}
         className={
           className ||
           `${
             front ? 'flex' : 'hidden'
-          } flex flex-col items-center justify-evenly gap-8 w-full h-[30rem] min-w-[30rem] max-w-fit min-h-[25rem] px-8 py-12 max-h-fit shadow-lg ease-in-out duration-300 rounded-md cursor-pointer hover:shadow-lg hover:scale-95`
+          } flex flex-col items-center justify-evenly gap-8 w-full h-[35rem] min-w-[40rem] max-w-fit min-h-[fit] px-8 py-12 max-h-fit shadow-lg ease-in-out duration-300 rounded-md hover:shadow-lg`
         }
       >
         <h3 className="text-primary font-medium text-[2.2rem]">Question</h3>
         <section className="flex items-center w-full justify-evenly h-full min-h-[70%] relative">
           <FontAwesomeIcon
             icon={faQuestion}
-            className="text-primary self-start absolute top-8 left-8"
+            className="text-primary self-start absolute top-8 h-[3rem] left-8 z-[999] bg-white"
           />
+          <span className='flex flex-col items-center gap-6 h-full justify-between'>
           <p>{question || 'This is a card test'}</p>
+          <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setFront(!front);
+            setBack(!back);
+          }}
+          value={front ? 'Show Answer' : 'Show Question'}
+          className='bg-primary text-[1.5rem] text-white font-medium p-2 px-4 rounded-md ease-in-out duration hover:scale-[.98]'
+          />
+          </span>
           <FontAwesomeIcon
             icon={faQuestion}
-            className="text-primary self-end absolute bottom-8 right-8"
+            className="text-primary self-start absolute bottom-8 h-[3rem] z-[999] bg-white right-8"
           />
         </section>
         <p>
@@ -69,15 +74,11 @@ const FlashCard: FC<FlashCardProps> = ({
         </p>
       </article>
       <article
-      onClick={() => {
-        dispatch(setFrontCard(!front))
-        dispatch(setBackCard(!back))
-      }}
         className={
           className ||
           `${
             back ? 'flex' : 'hidden'
-          } flex flex-col items-center justify-evenly gap-8 w-full h-[30rem] min-w-[30rem] max-w-fit min-h-[25rem] px-8 py-12 max-h-fit shadow-lg ease-in-out duration-300 rounded-md cursor-pointer hover:shadow-lg hover:scale-95`
+          } flex flex-col items-center justify-evenly gap-8 w-full h-[35rem] min-w-[40rem] max-w-fit min-h-[fit] px-8 py-12 max-h-fit shadow-lg ease-in-out duration-300 rounded-md hover:shadow-lg`
         }
       >
         <h3 className="text-primary font-medium text-[2.2rem]">Answer</h3>
@@ -86,7 +87,18 @@ const FlashCard: FC<FlashCardProps> = ({
             icon={faQuoteLeft}
             className="text-primary self-start absolute top-8 left-8"
           />
-          <p>{answer || 'This is a card test'}</p>
+          <span className='flex flex-col items-center gap-6 h-full justify-between'>
+          <p>{answer || 'This is the answer to it'}</p>
+          <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setFront(!front);
+            setBack(!back);
+          }}
+          value={front ? 'Show Answer' : 'Show Question'}
+          className='bg-primary text-[1.5rem] text-white font-medium p-2 px-4 rounded-md ease-in-out duration hover:scale-[.98]'
+          />
+          </span>
           <FontAwesomeIcon
             icon={faQuoteRight}
             className="text-primary self-end absolute bottom-8 right-8"
@@ -110,7 +122,7 @@ FlashCard.propTypes = {
   answer: PropTypes.string,
   showFront: PropTypes.bool,
   className: PropTypes.string,
-  showBack: PropTypes.bool
+  showBack: PropTypes.bool,
 };
 
 export default FlashCard;
